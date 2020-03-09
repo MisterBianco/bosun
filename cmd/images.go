@@ -16,7 +16,7 @@ limitations under the License.
 package cmd
 
 import (
-	"bosun/utils"
+	"github.com/misterbianco/bosun/utils"
 
 	"github.com/spf13/cobra"
 )

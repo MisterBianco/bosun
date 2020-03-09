@@ -16,6 +16,6 @@ go_library(
         "@com_github_docker_docker//pkg/jsonmessage:go_default_library",
 	    "@com_github_docker_docker//pkg/term:go_default_library"
     ],
-    importpath = "bosun/utils",
+    importpath = "github.com/misterbianco/bosun/utils",
     visibility = ["//visibility:public"]
 )

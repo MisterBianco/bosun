@@ -22,7 +22,7 @@ THE SOFTWARE.
 package main
 
 import (
-	"bosun/cmd"
+	"github.com/misterbianco/bosun/cmd"
 )
 
 func main() {
