@@ -1,0 +1,26 @@
+# top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{json,json5,webmanifest}]
+indent_size = 2
+
+[*.{yaml,yml,nim}]
+indent_size = 2
+
+[*.{htm,html,css,sass,scss,less,svg,vue}]
+indent_size = 2
+
+[*.{go,js}]
+indent_style = tab
+
+[Makefile]
+indent_style = tab
