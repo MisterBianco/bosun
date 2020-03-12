@@ -1,59 +1,77 @@
 package utils
 
 import (
-	"archive/tar"
-	"bytes"
 	"context"
-	"io/ioutil"
+	"fmt"
+	"io"
 	"log"
 	"os"
+	"path"
 
 	"github.com/docker/docker/api/types"
 	dockerclient "github.com/docker/docker/client"
+	"github.com/docker/docker/pkg/archive"
 	"github.com/docker/docker/pkg/jsonmessage"
 	"github.com/docker/docker/pkg/term"
 )
+
+
+func PushImage(conf Configuration) {
+	ctx := context.Background()
+	dockerClient, err := dockerclient.NewEnvClient()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// sess, _ := session.NewSessionWithOptions(session.Options{
+	// 	SharedConfigState: session.SharedConfigEnable,
+	// })
+	// svc := ecr.New(sess)
+	// ain := &ecr.GetAuthorizationTokenInput{}
+	// aout, _ := svc.GetAuthorizationToken(ain)
+
+	for _, imageName := range conf.Tags {
+		imagePushResponse, err := dockerClient.ImagePush(
+			ctx,
+			imageName,
+			types.ImagePushOptions{
+				All: true})
+				// RegistryAuth: *aout.AuthorizationData[0].AuthorizationToken})
+
+		if err != nil {
+			log.Fatal(err, " :unable to build docker image")
+		}
+
+		defer imagePushResponse.Close()
+
+		io.Copy(os.Stdout, imagePushResponse)
+
+		// defer imagePushResponse.Body.Close()
+
+		// termFd, isTerm := term.GetFdInfo(os.Stderr)
+		// jsonmessage.DisplayJSONMessagesStream(imagePushResponse.Body, os.Stderr, termFd, isTerm, nil)
+	}
+}
 
 func CreateImage(conf Configuration, filePath string) {
 	ctx := context.Background()
 	dockerClient, err := dockerclient.NewEnvClient()
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
-	buf := new(bytes.Buffer)
-    tw := tar.NewWriter(buf)
-    defer tw.Close()
-
-	dockerFileReader, err := os.Open(filePath)
+	fmt.Println(filePath)
+	buildCtx, err := archive.TarWithOptions(path.Join(filePath, "../"), &archive.TarOptions{})
 	if err != nil {
-		log.Fatal(err, "cant open dockerfile")
+		log.Fatal(err)
 	}
 
-	dockerFile, err := ioutil.ReadAll(dockerFileReader)
-	if err != nil {
-		log.Fatal(err, "cant read dockerfile")
-	}
-
-	tarHeader := &tar.Header{
-		Name: filePath,
-		Size: int64(len(dockerFile)),
-	}
-	err = tw.WriteHeader(tarHeader)
-	if err != nil {
-		log.Fatal(err, " :unable to write tar header")
-	}
-	_, err = tw.Write(dockerFile)
-	if err != nil {
-		log.Fatal(err, " :unable to write tar body")
-	}
-	dockerFileTarReader := bytes.NewReader(buf.Bytes())
 	imageBuildResponse, err := dockerClient.ImageBuild(
 		ctx,
-		dockerFileTarReader,
+		buildCtx,
 		types.ImageBuildOptions{
-			Context: dockerFileTarReader,
-			Dockerfile: filePath,
+			Context: buildCtx,
+			// Dockerfile: filePath,
 			Remove: true,
 			Tags: conf.Tags,
 			BuildArgs: conf.Args})
@@ -62,6 +80,11 @@ func CreateImage(conf Configuration, filePath string) {
 		log.Fatal(err, " :unable to build docker image")
 	}
 	defer imageBuildResponse.Body.Close()
+
+	// _, err = io.Copy(os.Stdout, imageBuildResponse.Body)
+	// if err != nil {
+	// 	log.Fatal(err, " :unable to read image build response")
+	// }
 
 	termFd, isTerm := term.GetFdInfo(os.Stderr)
 	jsonmessage.DisplayJSONMessagesStream(imageBuildResponse.Body, os.Stderr, termFd, isTerm, nil)

@@ -33,7 +33,7 @@ var versionCmd = &cobra.Command{
 	Short: "Display version info",
 	Long:  `Display version info`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Dockle v1.0.0")
+		fmt.Println("bosun v1.0.0")
 	},
 }
 

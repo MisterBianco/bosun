@@ -2,7 +2,6 @@ package utils
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 
 	"github.com/blang/semver"
@@ -14,21 +13,34 @@ type Configuration struct {
 	Tags []string `yaml:"tags"`
 	Args map[string]*string `yaml:"args"`
 	Labels map[string]*string `yaml:"labels"`
+	Dockerfile string `yaml:"dockerfile"`
 	// Labels are not recommended since they are injected as the last build step.
 }
 
-func (c *Configuration) GetConfiguration(filePath string) *Configuration {
+type Configurations struct {
+	Configs []Configuration
+}
 
-	conf, err := ioutil.ReadFile(filePath)
+func (c *Configurations) GetConfigurations(filePath string) *Configurations {
+
+	conf, err := os.Open(filePath)
 	if err != nil {
 		fmt.Printf("File %s couldn't be read: %s\n", filePath, err)
 		os.Exit(-1)
 	}
+	defer conf.Close()
 
-	err = yaml.Unmarshal(conf, c)
-	if err != nil {
-		fmt.Printf("Unmarshalling failure: %s\n", err)
-		os.Exit(-1)
+	// err = yaml.Unmarshal(conf, c)
+	// if err != nil {
+	// 	fmt.Printf("Unmarshalling failure: %s\n", err)
+	// 	os.Exit(-1)
+	// }
+
+	var decoder = yaml.NewDecoder(conf)
+
+	var thing Configuration
+	for decoder.Decode(&thing) == nil {
+		c.Configs = append(c.Configs, thing)
 	}
 
 	return c
@@ -45,11 +57,11 @@ func (c *Configuration) GenerateTags() *Configuration {
 			continue
 		}
 
-		result = append(result, fmt.Sprintf("%s:%v",c.Name,v.Major))
-		result = append(result, fmt.Sprintf("%s:%v.%v", c.Name,v.Major, v.Minor))
-		result = append(result, fmt.Sprintf("%s:%v.%v.%v", c.Name,v.Major, v.Minor, v.Patch))
-
-		if v.Pre != nil {
+		if v.Pre == nil {
+			result = append(result, fmt.Sprintf("%s:%v",c.Name,v.Major))
+			result = append(result, fmt.Sprintf("%s:%v.%v", c.Name,v.Major, v.Minor))
+			result = append(result, fmt.Sprintf("%s:%v.%v.%v", c.Name,v.Major, v.Minor, v.Patch))
+		} else {
 			result = append(result, fmt.Sprintf("%s:%v-%s", c.Name, v.Major, v.Pre[0]))
 			result = append(result, fmt.Sprintf("%s:%v.%v-%s", c.Name,v.Major, v.Minor, v.Pre[0]))
 			result = append(result, fmt.Sprintf("%s:%v.%v.%v-%s", c.Name,v.Major, v.Minor, v.Patch, v.Pre[0]))

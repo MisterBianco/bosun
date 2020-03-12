@@ -545,8 +545,8 @@ go_repository(
 go_repository(
     name = "com_github_stretchr_testify",
     importpath = "github.com/stretchr/testify",
-    sum = "h1:bSDNvY7ZPG5RlJ8otE/7V6gMiyenm9RtJ7IUVIAoJ1w=",
-    version = "v1.2.2",
+    sum = "h1:2E4SXV/wtOkTonXsotYi4li6zVWxYlZuYNCXe9XRJyk=",
+    version = "v1.4.0",
 )
 
 go_repository(
@@ -741,8 +741,9 @@ go_repository(
 go_repository(
     name = "com_github_docker_docker",
     importpath = "github.com/docker/docker",
-    sum = "h1:IkZjBSIc8hBjLpqeAbeE5mca5mNgeatLHBy3GO78BWo=",
-    version = "v1.13.1",
+    replace = "github.com/docker/engine",
+    sum = "h1:XG9ZMdzDhq4cmyZeZXlmhaSk5++uOHWWt1dXhrYCou4=",
+    version = "v1.4.2-0.20200309214505-aa6a9891b09c",
 )
 
 go_repository(
@@ -771,4 +772,123 @@ go_repository(
     importpath = "github.com/opencontainers/go-digest",
     sum = "h1:WzifXhOVOEOuFYOJAW6aQqW0TooG2iki3E3Ii+WN7gQ=",
     version = "v1.0.0-rc1",
+)
+
+go_repository(
+    name = "com_github_containerd_containerd",
+    importpath = "github.com/containerd/containerd",
+    sum = "h1:LoIzb5y9x5l8VKAlyrbusNPXqBY0+kviRloxFUMFwKc=",
+    version = "v1.3.3",
+)
+
+go_repository(
+    name = "com_github_containerd_continuity",
+    importpath = "github.com/containerd/continuity",
+    sum = "h1:8ahmSVELW1wghbjerVAyuEYD5+Dio66RYvSS0iGfL1M=",
+    version = "v0.0.0-20200228182428-0f16d7a0959c",
+)
+
+go_repository(
+    name = "com_github_dustin_go_humanize",
+    importpath = "github.com/dustin/go-humanize",
+    sum = "h1:qk/FSDDxo05wdJH28W+p5yivv7LuLYLRXPPD8KQCtZs=",
+    version = "v0.0.0-20171111073723-bb3d318650d4",
+)
+
+go_repository(
+    name = "com_github_hpcloud_tail",
+    importpath = "github.com/hpcloud/tail",
+    sum = "h1:nfCOvKYfkgYP8hkirhJocXT2+zOD8yUNjXaWfTlyFKI=",
+    version = "v1.0.0",
+)
+
+go_repository(
+    name = "com_github_jhoonb_archivex",
+    importpath = "github.com/jhoonb/archivex",
+    sum = "h1:EiEjLram6Y0WXygV4WyzKmTr3XaR4CD3tvjdTrsk3cU=",
+    version = "v0.0.0-20180718040744-0488e4ce1681",
+)
+
+go_repository(
+    name = "com_github_morikuni_aec",
+    importpath = "github.com/morikuni/aec",
+    sum = "h1:nP9CBfwrvYnBRgY6qfDQkygYDmYwOilePFkwzv4dU8A=",
+    version = "v1.0.0",
+)
+
+go_repository(
+    name = "com_github_onsi_ginkgo",
+    importpath = "github.com/onsi/ginkgo",
+    sum = "h1:q/mM8GF/n0shIN8SaAZ0V+jnLPzen6WIVZdiwrRlMlo=",
+    version = "v1.10.1",
+)
+
+go_repository(
+    name = "com_github_onsi_gomega",
+    importpath = "github.com/onsi/gomega",
+    sum = "h1:XPnZz8VVBHjVsy1vzJmRwIcSwiUO+JFfrv/xGiigmME=",
+    version = "v1.7.0",
+)
+
+go_repository(
+    name = "com_github_opencontainers_image_spec",
+    importpath = "github.com/opencontainers/image-spec",
+    sum = "h1:JMemWkRwHx4Zj+fVxWoMCFm/8sYGGrUVojFA6h/TRcI=",
+    version = "v1.0.1",
+)
+
+go_repository(
+    name = "com_github_opencontainers_runc",
+    importpath = "github.com/opencontainers/runc",
+    sum = "h1:GlxAyO6x8rfZYN9Tt0Kti5a/cP41iuiO2yYT0IJGY8Y=",
+    version = "v0.1.1",
+)
+
+go_repository(
+    name = "in_gopkg_airbrake_gobrake_v2",
+    importpath = "gopkg.in/airbrake/gobrake.v2",
+    sum = "h1:7z2uVWwn7oVeeugY1DtlPAy5H+KYgB1KeKTnqjNatLo=",
+    version = "v2.0.9",
+)
+
+go_repository(
+    name = "in_gopkg_fsnotify_v1",
+    importpath = "gopkg.in/fsnotify.v1",
+    sum = "h1:xOHLXZwVvI9hhs+cLKq5+I5onOuwQLhQwiu63xxlHs4=",
+    version = "v1.4.7",
+)
+
+go_repository(
+    name = "in_gopkg_gemnasium_logrus_airbrake_hook_v2",
+    importpath = "gopkg.in/gemnasium/logrus-airbrake-hook.v2",
+    sum = "h1:OAj3g0cR6Dx/R07QgQe8wkA9RNjB2u4i700xBkIT4e0=",
+    version = "v2.1.2",
+)
+
+go_repository(
+    name = "in_gopkg_tomb_v1",
+    importpath = "gopkg.in/tomb.v1",
+    sum = "h1:uRGJdciOHaEIrze2W8Q3AKkepLTh2hOroT7a+7czfdQ=",
+    version = "v1.0.0-20141024135613-dd632973f1e7",
+)
+
+go_repository(
+    name = "io_docker_go_docker",
+    importpath = "docker.io/go-docker",
+    sum = "h1:VdXS/aNYQxyA9wdLD5z8Q8Ro688/hG8HzKxYVEVbE6s=",
+    version = "v1.0.0",
+)
+
+go_repository(
+    name = "org_bazil_fuse",
+    importpath = "bazil.org/fuse",
+    sum = "h1:SC+c6A1qTFstO9qmB86mPV2IpYme/2ZoEQ0hrP+wo+Q=",
+    version = "v0.0.0-20160811212531-371fbbdaa898",
+)
+
+go_repository(
+    name = "org_golang_dl",
+    importpath = "golang.org/dl",
+    sum = "h1:k0JXU5/A99mZ91hQmY+2BkVN4+mzWSFmfjJu5QHm/kU=",
+    version = "v0.0.0-20200302224518-306f3096cb2f",
 )

@@ -35,18 +35,9 @@ var cfgFile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "dockle",
-	Short: "A tool to automatically tag your images based on a dockle.yml file",
-	Long:  `Tag your docker images with a simple config file
-
-A bosun is the senior most rate of the deck department and is responsible for
-the components of a ship's hull. The bosun supervises the other members of the
-ship's deck department, and typically is not a watchstander, except on vessels
-with small crews. Additional duties vary depending upon ship, crew, and
-circumstances.
-
-                                                --wikipedia :)
-	`,
+	Use:   "bosun",
+	Short: "A tool to automatically tag your images based on a bosun.yml file",
+	Long:  `Tag your docker images with a simple config file`,
 }
 
 func Execute() {
@@ -75,7 +66,7 @@ func initConfig() {
 			os.Exit(1)
 		}
 
-		// Search config in home directory with name ".dockle" (without extension).
+		// Search config in home directory with name ".bosun" (without extension).
 		viper.AddConfigPath(home)
 		viper.SetConfigName(".bosun")
 	}

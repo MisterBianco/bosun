@@ -23,24 +23,9 @@ THE SOFTWARE.
 package cmd
 
 import (
-	"fmt"
-	"path"
-
-	"github.com/misterbianco/bosun/utils"
-
+	"github.com/misterbianco/bosun/build"
 	"github.com/spf13/cobra"
 )
-
-var intro = `
-______
-| ___ \
-| |_/ / ___  ___ _   _ _ __
-| ___ \/ _ \/ __| | | | '_ \
-| |_/ / (_) \__ \ |_| | | | |
-\____/ \___/|___/\__,_|_| |_|
-
--------------------------------------------------
-`
 
 var buildCmd = &cobra.Command{
 	Use:   "build",
@@ -49,17 +34,8 @@ var buildCmd = &cobra.Command{
 	Args: cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 
-		fmt.Println(intro)
-
-		for i := 0; i < len(args); i++ {
-			fmt.Printf("Checking for build context and configuration: %s\n", args[i])
-
-			var conf utils.Configuration
-			conf.GetConfiguration(path.Join(args[i], "bosun.yml"))
-			conf.GenerateTags()
-
-			utils.CreateImage(conf, path.Join(args[i], "Dockerfile"))
-		}
+		app := build.Build{}
+		app.BuildImage(args)
 	},
 }
 

@@ -1,4 +1,4 @@
-# Bosun
+![logo](assets/linkedin_banner_image_2.png)
 
 Bosun, or boatswain, is a utility to build docker images using a yaml config file
 The yaml file is quite simple at the moment. There are only a couple values required.

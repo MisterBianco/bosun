@@ -16,23 +16,18 @@ limitations under the License.
 package cmd
 
 import (
-	"fmt"
-
+	"github.com/misterbianco/bosun/push"
 	"github.com/spf13/cobra"
 )
 
 // pushCmd represents the push command
 var pushCmd = &cobra.Command{
 	Use:   "push",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Command to push your tagged image to its repo",
+	Long: `A command that wraps the functionality of pushing your prebuilt images with all of its tags.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("push called")
+		app := push.Push{}
+		app.PushImage(args)
 	},
 }
 

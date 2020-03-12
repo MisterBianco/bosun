@@ -4,7 +4,7 @@ load(
 )
 
 go_library(
-    name = "utils",
+    name = "push",
     srcs = glob([
         "*.go"
     ]),
@@ -14,10 +14,8 @@ go_library(
         "@com_github_docker_docker//api/types:go_default_library",
         "@com_github_docker_docker//client:go_default_library",
         "@com_github_docker_docker//pkg/jsonmessage:go_default_library",
-	    "@com_github_docker_docker//pkg/term:go_default_library",
-        "@com_github_docker_docker//pkg/archive:go_default_library",
-        "@com_github_mitchellh_go_homedir//:go_default_library",
+	    "@com_github_docker_docker//pkg/term:go_default_library"
     ],
-    importpath = "github.com/misterbianco/bosun/utils",
+    importpath = "github.com/misterbianco/bosun/push",
     visibility = ["//visibility:public"]
 )
