@@ -1,3 +1,5 @@
 bazel-*
 bosun.yml
 Dockerfile
+
+dist

@@ -2,45 +2,54 @@ package build
 
 import (
 	"fmt"
+	"io"
+	"os"
 	"path"
-	"strings"
 
 	"github.com/misterbianco/bosun/utils"
+	"gopkg.in/yaml.v2"
 )
 
 type Build struct {
-
+	Configurations utils.Configurations
+	Quiet bool
+	File string
+	Images []string
 }
 
-func (build *Build) BuildImage(args []string) {
-	var images []string
+func (self *Build) GetConfigurations(filePath string) *Build {
+	configFile, err := os.Open(path.Join(filePath, self.File))
 
-	for _, argpath := range args {
-		fmt.Printf("Checking for build context and configuration: %s\n", argpath)
-
-		var conf utils.Configurations
-		conf.GetConfigurations(path.Join(argpath, "bosun.yml"))
-
-		for _, config := range conf.Configs {
-			config.GenerateTags()
-
-			// fmt.Println(config.Tags)
-
-			dockerfile := config.Dockerfile
-			if config.Dockerfile == "" {
-				dockerfile = "Dockerfile"
-			}
-
-			fmt.Println(path.Join(argpath, dockerfile))
-
-			utils.CreateImage(config, path.Join(argpath, dockerfile))
-
-			for _, tag := range config.Tags {
-				images = append(images, tag)
-			}
-		}
+	if err != nil {
+		fmt.Printf("Failed to open file: %s\n", path.Join(filePath, self.File))
+		return self
 	}
 
-	fmt.Println("\r\n------------------------------------")
-	fmt.Println("docker push",strings.Join(images, " && docker push "))
+	defer configFile.Close()
+
+	var decoder = yaml.NewDecoder(configFile)
+	decoder.SetStrict(true)
+
+	var yamlConfig utils.Configuration
+
+	for {
+		err := decoder.Decode(&yamlConfig)
+
+		if err == io.EOF {
+			break
+		} else if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+
+		yamlConfig.Path = filePath
+		yamlConfig.Tags = utils.GenerateTags(yamlConfig.Name, yamlConfig.Tags)
+		if yamlConfig.Dockerfile == "" {
+			yamlConfig.Dockerfile = "Dockerfile"
+		}
+
+		self.Configurations = append(self.Configurations, yamlConfig)
+	}
+
+	return self
 }
